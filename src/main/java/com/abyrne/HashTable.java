@@ -22,9 +22,7 @@ public class HashTable<K, V> {
             return null;
         }
 
-        ListIterator<Entry<K, V>> linkedListIterator = values.listIterator();
-        while (linkedListIterator.hasNext()) {
-            Entry<K, V> entry = linkedListIterator.next();
+        for (Entry<K, V> entry : values) {
             if (entry != null && entry.getKey().equals(key)) {
                 return entry.getValue();
             }
@@ -46,9 +44,7 @@ public class HashTable<K, V> {
             return true;
         }
 
-        ListIterator<Entry<K, V>> linkedListIterator = values.listIterator();
-        while (linkedListIterator.hasNext()) {
-            Entry<K, V> entry = linkedListIterator.next();
+        for (Entry<K, V> entry : values) {
             if (entry != null && entry.getKey().equals(key)) {
                 entry.setValue(value);
                 return true;
