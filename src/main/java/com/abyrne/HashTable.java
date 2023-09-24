@@ -32,14 +32,12 @@ public class HashTable<K, V> {
         int index = getIndex(key);
         Node<K, V> headNode = table[index];
 
-        // empty bucket
         if (headNode == null) {
             headNode = new Node<K, V>(key, value, null);
             table[index] = headNode;
             return true;
         }
 
-        // head is key
         if (headNode.getKey().equals(key)) {
             headNode.setValue(value);
             return true;
@@ -66,17 +64,32 @@ public class HashTable<K, V> {
     }
 
     public V remove(K key) {
-        if (key == null) {
+        if (key == null || table == null) {
             return null;
         }
 
         int index = getIndex(key);
-        Node<K, V> currentNode = table[index];
+        Node<K, V> headNode = table[index];
 
-        while (currentNode != null) {
-            if (currentNode.getKey().equals(key)) {
+        if (headNode == null) {
+            return null;
+        }
 
+        if (headNode.getKey().equals(key)) {
+            table[index] = headNode.getNext();
+            return headNode.getValue();
+        }
+
+        Node<K, V> previousNode = headNode;
+        Node<K, V> nextNode = headNode.getNext();
+        while (nextNode != null) {
+            if (headNode.getKey().equals(key)) {
+                previousNode.setNext(nextNode.getNext());
+                return nextNode.getValue();
             }
+            previousNode = nextNode;
+            nextNode = nextNode.getNext();
+            previousNode.setNext(nextNode);
         }
 
         return null;
