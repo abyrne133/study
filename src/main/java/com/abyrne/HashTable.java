@@ -1,31 +1,21 @@
 package com.abyrne;
 
-
-import java.util.LinkedList;
-import java.util.ListIterator;
-
 public class HashTable<K, V> {
-    LinkedList<Entry<K, V>> table[];
-
-    HashTable() {
-        table = (LinkedList<Entry<K, V>>[]) new LinkedList<?>[31];
-    }
+    Node<K, V>[] table;
 
     public V get(K key) {
-        if (key == null) {
+        if (key == null || table == null) {
             return null;
         }
 
         int index = getIndex(key);
-        LinkedList<Entry<K, V>> values = table[index];
-        if (values == null) {
-            return null;
-        }
+        Node<K, V> currentNode = table[index];
 
-        for (Entry<K, V> entry : values) {
-            if (entry != null && entry.getKey().equals(key)) {
-                return entry.getValue();
+        while (currentNode != null) {
+            if (currentNode.getKey().equals(key)) {
+                return currentNode.getValue();
             }
+            currentNode = currentNode.getNext();
         }
         return null;
     }
@@ -35,23 +25,43 @@ public class HashTable<K, V> {
             return false;
         }
 
+        if (table == null) {
+            table = (Node<K, V>[]) new Node<?, ?>[31];
+        }
+
         int index = getIndex(key);
-        LinkedList<Entry<K, V>> values = table[index];
-        if (values == null) {
-            values = new LinkedList<>();
-            values.add(new Entry<K, V>(key, value));
-            table[index] = values;
+        Node<K, V> headNode = table[index];
+
+        // empty bucket
+        if (headNode == null) {
+            headNode = new Node<K, V>(key, value, null);
+            table[index] = headNode;
             return true;
         }
 
-        for (Entry<K, V> entry : values) {
-            if (entry != null && entry.getKey().equals(key)) {
-                entry.setValue(value);
-                return true;
-            }
+        // head is key
+        if (headNode.getKey().equals(key)) {
+            headNode.setValue(value);
+            return true;
         }
 
-        values.add(new Entry<K, V>(key, value));
+        // iterate remainder of bucket for key
+        Node<K, V> previousNode = headNode;
+        Node<K, V> nextNode = headNode.getNext();
+        while (nextNode != null) {
+            if (nextNode.getKey().equals(key)) {
+                headNode.setValue(value);
+                return true;
+            }
+
+            previousNode = nextNode;
+            nextNode = nextNode.getNext();
+            previousNode.setNext(nextNode);
+        }
+
+        // key not found in bucket, append to end
+        Node<K, V> newNode = new Node<K, V>(key, value, null);
+        previousNode.setNext(newNode);
         return true;
     }
 
@@ -61,18 +71,11 @@ public class HashTable<K, V> {
         }
 
         int index = getIndex(key);
-        LinkedList<Entry<K, V>> values = table[index];
-        if (values == null) {
-            return null;
-        }
+        Node<K, V> currentNode = table[index];
 
-        ListIterator<Entry<K, V>> linkedListIterator = values.listIterator();
-        while (linkedListIterator.hasNext()) {
-            int i = linkedListIterator.nextIndex();
-            Entry<K, V> entry = linkedListIterator.next();
-            if (entry != null && entry.getKey().equals(key)) {
-                values.remove(i);
-                return entry.getValue();
+        while (currentNode != null) {
+            if (currentNode.getKey().equals(key)) {
+
             }
         }
 
@@ -80,29 +83,7 @@ public class HashTable<K, V> {
     }
 
     private int getIndex(K key) {
-        int hashCode = Math.abs(key.hashCode());
-        return hashCode % table.length;
-    }
-}
-
-class Entry<K, V> {
-    private final K key;
-    private V value;
-
-    Entry(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    K getKey() {
-        return key;
-    }
-
-    V getValue() {
-        return value;
-    }
-
-    void setValue(V value) {
-        this.value = value;
+        int hashCode = key.hashCode();
+        return Math.abs(hashCode % table.length);
     }
 }
