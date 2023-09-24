@@ -123,10 +123,10 @@ public class HashTableTest {
         String[] values = new String[size];
         for (int i = 0; i < size; i++) {
             values[i] = hashTable.remove(i);
+            assertEquals(expectedValues[i], values[i]);
         }
 
         // then
-        assertArrayEquals(expectedValues, values);
         for (int i = 0; i < size; i++) {
             assertNull(hashTable.get(i));
         }
