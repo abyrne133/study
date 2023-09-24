@@ -3,7 +3,6 @@ package com.abyrne;
 
 class Node<K, V> {
     private K key;
-
     private V value;
     private Node<K, V> next;
 
