@@ -5,6 +5,7 @@ public final class Singleton {
     private static Singleton INSTANCE;
 
     private Singleton() {
+        System.out.println("created");
     }
 
     public static synchronized Singleton getInstance() {
