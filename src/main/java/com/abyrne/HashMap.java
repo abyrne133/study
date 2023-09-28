@@ -1,7 +1,22 @@
 package com.abyrne;
 
 public class HashMap<K, V> {
-    Node<K, V>[] buckets;
+
+    private static final int DEFAULT_CAPACITY = 16;
+    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    private Node<K, V>[] buckets;
+    private int capacity;
+    private float loadFactor;
+
+    public HashMap() {
+        this.capacity = DEFAULT_CAPACITY;
+        this.loadFactor = DEFAULT_LOAD_FACTOR;
+    }
+
+    public HashMap(int initialCapacity, float loadFactor) {
+        this.capacity = initialCapacity;
+        this.loadFactor = loadFactor;
+    }
 
     public V get(K key) {
         if (key == null || buckets == null) {
@@ -26,7 +41,7 @@ public class HashMap<K, V> {
         }
 
         if (buckets == null) {
-            buckets = (Node<K, V>[]) new Node<?, ?>[31];
+            buckets = (Node<K, V>[]) new Node<?, ?>[capacity];
         }
 
         int index = getIndex(key);
@@ -97,6 +112,6 @@ public class HashMap<K, V> {
 
     private int getIndex(K key) {
         int hashCode = key.hashCode();
-        return Math.abs(hashCode % buckets.length);
+        return Math.abs((hashCode ^ (hashCode >>> 16))) % buckets.length;
     }
 }
