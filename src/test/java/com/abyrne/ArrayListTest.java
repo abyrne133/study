@@ -46,9 +46,11 @@ class ArrayListTest {
     void givenPopulatedArrayList_whenAllElementsRemoved_thenListIsEmpty() {
         ArrayList<Integer> arrayList = new ArrayList<>();
         int size = 450;
+
         for (int i = 0; i < size; i++) {
             arrayList.add(i);
         }
+
         for (int i = 0; i < size; i++) {
             arrayList.remove(size - 1 - i);
         }
@@ -59,6 +61,7 @@ class ArrayListTest {
     @Test
     void givenArrayListWithItem_whenGet_thenExpectedItemReturned() {
         ArrayList<Integer> arrayList = new ArrayList<>();
+
         arrayList.add(-1);
         arrayList.set(0, 0);
         assertEquals(0, arrayList.get(0));
@@ -66,9 +69,6 @@ class ArrayListTest {
         for (int i = 1; i < 300; i++) {
             arrayList.add(i);
         }
-
         assertEquals(299, arrayList.get(299));
-
-
     }
 }
