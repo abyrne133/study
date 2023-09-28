@@ -113,7 +113,7 @@ public class HashMapTest {
         // given
         final int size = 1_000_000;
         final float loadFactor = 0.75f;
-        HashMap<Integer, String> hashMap = new HashMap<>((int)(size/loadFactor), loadFactor);
+        HashMap<Integer, String> hashMap = new HashMap<>((int) (size / loadFactor), loadFactor);
         String[] expectedValues = new String[size];
         for (int i = 0; i < size; i++) {
             String value = String.valueOf(i);
