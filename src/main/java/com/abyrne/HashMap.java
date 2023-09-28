@@ -1,15 +1,15 @@
 package com.abyrne;
 
-public class HashTable<K, V> {
-    Node<K, V>[] table;
+public class HashMap<K, V> {
+    Node<K, V>[] buckets;
 
     public V get(K key) {
-        if (key == null || table == null) {
+        if (key == null || buckets == null) {
             return null;
         }
 
         int index = getIndex(key);
-        Node<K, V> currentNode = table[index];
+        Node<K, V> currentNode = buckets[index];
 
         while (currentNode != null) {
             if (currentNode.getKey().equals(key)) {
@@ -25,16 +25,16 @@ public class HashTable<K, V> {
             return false;
         }
 
-        if (table == null) {
-            table = (Node<K, V>[]) new Node<?, ?>[31];
+        if (buckets == null) {
+            buckets = (Node<K, V>[]) new Node<?, ?>[31];
         }
 
         int index = getIndex(key);
-        Node<K, V> headNode = table[index];
+        Node<K, V> headNode = buckets[index];
 
         if (headNode == null) {
             headNode = new Node<K, V>(key, value, null);
-            table[index] = headNode;
+            buckets[index] = headNode;
             return true;
         }
 
@@ -64,19 +64,19 @@ public class HashTable<K, V> {
     }
 
     public V remove(K key) {
-        if (key == null || table == null) {
+        if (key == null || buckets == null) {
             return null;
         }
 
         int index = getIndex(key);
-        Node<K, V> headNode = table[index];
+        Node<K, V> headNode = buckets[index];
 
         if (headNode == null) {
             return null;
         }
 
         if (headNode.getKey().equals(key)) {
-            table[index] = headNode.getNext();
+            buckets[index] = headNode.getNext();
             return headNode.getValue();
         }
 
@@ -97,6 +97,6 @@ public class HashTable<K, V> {
 
     private int getIndex(K key) {
         int hashCode = key.hashCode();
-        return Math.abs(hashCode % table.length);
+        return Math.abs(hashCode % buckets.length);
     }
 }
