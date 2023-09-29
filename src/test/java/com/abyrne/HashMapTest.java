@@ -157,7 +157,7 @@ class HashMapTest {
     }
 
     @Test()
-    void givenHashMapWithCustomPrehashFunciton_whenPopulated_thenExpectedValuesRetrievable() {
+    void givenHashMapWithCustomPreHashFunction_whenPopulated_thenExpectedValuesRetrievable() {
         // given
         int capacity = 500_000;
         float loadFactor = 0.9f;
@@ -173,6 +173,24 @@ class HashMapTest {
         for (int i = 0; i < capacity; i++) {
             assertEquals(i, hashMap.remove(i));
         }
+    }
 
+    @Test()
+    void givenHashMapWithPoorPreHashFunction_whenPopulated_thenExpectedValuesRetrievable() {
+        // given
+        int capacity = 100; // low number or the pre-hash function will have us here all day!
+        float loadFactor = 0.9f;
+        HashMap<Integer, Integer> hashMap = new HashMap(capacity, loadFactor, (k) -> 7);
+
+
+        // when
+        for (int i = 0; i < capacity; i++) {
+            assertTrue(hashMap.put(i, i));
+        }
+
+        // then
+        for (int i = 0; i < capacity; i++) {
+            assertEquals(i, hashMap.remove(i));
+        }
     }
 }

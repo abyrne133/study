@@ -6,7 +6,7 @@ public class HashMap<K, V> {
 
     private static final int DEFAULT_CAPACITY = 16;
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
-    private Function<Object, Integer> prehashFunction;
+    private final Function<Object, Integer> preHashFunction;
     private Node<K, V>[] buckets;
     private int capacity;
     private final float loadFactor;
@@ -23,16 +23,16 @@ public class HashMap<K, V> {
         this.setThreshold();
         this.size = 0;
         this.buckets = (Node<K, V>[]) new Node<?, ?>[capacity];
-        this.prehashFunction = (k) -> defaultPrehash(k);
+        this.preHashFunction = (k) -> defaultPreHash(k);
     }
 
-    public HashMap(int initialCapacity, float loadFactor, Function<Object, Integer> prehashFunction){
+    public HashMap(int initialCapacity, float loadFactor, Function<Object, Integer> preHashFunction){
         this.capacity = initialCapacity;
         this.loadFactor = loadFactor;
         this.setThreshold();
         this.size = 0;
         this.buckets = (Node<K, V>[]) new Node<?, ?>[capacity];
-        this.prehashFunction = prehashFunction;
+        this.preHashFunction = preHashFunction;
     }
 
     public V get(K key) {
@@ -137,14 +137,14 @@ public class HashMap<K, V> {
         return true;
     }
 
-    private int defaultPrehash(Object key) {
+    private int defaultPreHash(Object key) {
         int preHashCode = key.hashCode();
         return Math.abs((preHashCode ^ (preHashCode >>> 16)));
     }
 
 
     private int getIndex(Node<K, V>[] buckets, K key) {
-        return prehashFunction.apply(key) % buckets.length;
+        return Math.abs(preHashFunction.apply(key)) % buckets.length;
     }
 
     private void doubleCapacity() {
