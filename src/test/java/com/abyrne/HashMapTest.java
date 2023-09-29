@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -151,6 +152,26 @@ class HashMapTest {
         // then
         for (int i = 0; i < capacity; i++) {
             assertEquals(i, hashMap.get(i));
+        }
+
+    }
+
+    @Test()
+    void givenHashMapWithCustomPrehashFunciton_whenPopulated_thenExpectedValuesRetrievable() {
+        // given
+        int capacity = 500_000;
+        float loadFactor = 0.9f;
+        HashMap<Integer, Integer> hashMap = new HashMap(capacity, loadFactor, (k) -> k.hashCode());
+
+
+        // when
+        for (int i = 0; i < capacity; i++) {
+            assertTrue(hashMap.put(i, i));
+        }
+
+        // then
+        for (int i = 0; i < capacity; i++) {
+            assertEquals(i, hashMap.remove(i));
         }
 
     }
