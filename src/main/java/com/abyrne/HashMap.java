@@ -132,14 +132,14 @@ public class HashMap<K, V> {
     private void doubleCapacity() {
         capacity = capacity * 2;
         this.setThreshold();
-        this.rehashAndPopulate();
+        this.rehash();
     }
 
     private void setThreshold() {
         threshold = (int) (capacity * loadFactor);
     }
 
-    private void rehashAndPopulate() {
+    private void rehash() {
         Node<K, V>[] newBuckets = (Node<K, V>[]) new Node<?, ?>[capacity];
         for (int i = 0; i < buckets.length; i++) {
             Node<K, V> headNode = buckets[i];
