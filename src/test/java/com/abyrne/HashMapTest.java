@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class HashMapTest {
+class HashMapTest {
 
     @Test()
     void givenPutSuccess_whenGet_thenExpectedValue() {

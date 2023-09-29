@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SingletonTest {
+class SingletonTest {
 
     @Test
     void multipleInstancesAreEquals() {
