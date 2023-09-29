@@ -135,4 +135,23 @@ public class HashMapTest {
             assertNull(hashMap.get(i));
         }
     }
+
+    @Test()
+    void givenExceededThreshold_whenGetKey_thenExpectedValue() {
+        // given
+        int capacity = 200;
+        float loadFactor = 0.2f;
+        HashMap<Integer, Integer> hashMap = new HashMap<>(capacity, loadFactor);
+
+        // when
+        for (int i = 0; i < capacity; i++) {
+            assertTrue(hashMap.put(i, i));
+        }
+
+        // then
+        for (int i = 0; i < capacity; i++) {
+            assertEquals(i, hashMap.get(i));
+        }
+
+    }
 }
