@@ -40,21 +40,14 @@ public class HashMap<K, V> {
     }
 
     public boolean put(K key, V value) {
+        if (key == null) {
+            return false;
+        }
+
         if ((size + 1) >= threshold) {
             this.doubleCapacity();
-            Node<K, V>[] newBuckets = (Node<K, V>[]) new Node<?, ?>[capacity];
-            for (int i = 0; i < buckets.length; i++) {
-                Node<K, V> headNode = buckets[i];
-                if (headNode != null) {
-                    Node<K, V> nextNode = headNode;
-                    while (nextNode != null) {
-                        put(newBuckets, nextNode.getKey(), nextNode.getValue());
-                        nextNode = nextNode.getNext();
-                    }
-                }
-            }
-            buckets = newBuckets;
         }
+
         return put(buckets, key, value);
     }
 
@@ -139,10 +132,25 @@ public class HashMap<K, V> {
     private void doubleCapacity() {
         capacity = capacity * 2;
         this.setThreshold();
-
+        this.rehashAndPopulate();
     }
 
     private void setThreshold() {
-        this.threshold = (int) (capacity * loadFactor);
+        threshold = (int) (capacity * loadFactor);
+    }
+
+    private void rehashAndPopulate() {
+        Node<K, V>[] newBuckets = (Node<K, V>[]) new Node<?, ?>[capacity];
+        for (int i = 0; i < buckets.length; i++) {
+            Node<K, V> headNode = buckets[i];
+            if (headNode != null) {
+                Node<K, V> nextNode = headNode;
+                while (nextNode != null) {
+                    put(newBuckets, nextNode.getKey(), nextNode.getValue());
+                    nextNode = nextNode.getNext();
+                }
+            }
+        }
+        buckets = newBuckets;
     }
 }
