@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,28 +15,13 @@ class HashMapTest {
         HashMap<Integer, Integer> hashMap = new HashMap<>();
         int key = 5;
         int value = 25;
-        boolean isSuccessfulPut = hashMap.put(key, value);
-        assertTrue(isSuccessfulPut);
+        assertNull(hashMap.put(key, value));
 
         // when
         int result = hashMap.get(key);
 
         // then
         assertEquals(value, result);
-    }
-
-
-    @Test()
-    void givenNullKey_whenPut_thenPutFailure() {
-        // given
-        HashMap<Integer, Integer> hashMap = new HashMap<>();
-        int value = 25;
-
-        //when
-        boolean isSuccessfulPut = hashMap.put(null, value);
-
-        //then
-        assertFalse(isSuccessfulPut);
     }
 
     @Test()
@@ -47,8 +31,7 @@ class HashMapTest {
         String key = "my-key";
 
         // when
-        boolean isSuccessfulPut = hashMap.put(key, null);
-        assertTrue(isSuccessfulPut);
+        assertNull(hashMap.put(key, null));
 
         // then
         assertNull(hashMap.get(key));
@@ -84,8 +67,7 @@ class HashMapTest {
         String key = "the-key";
         double expectedValue = 56.4;
         HashMap<String, Double> hashMap = new HashMap<>();
-        boolean isSuccessfulPut = hashMap.put(key, expectedValue);
-        assertTrue(isSuccessfulPut);
+        assertNull(hashMap.put(key, expectedValue));
 
         // when
         double value = hashMap.remove(key);
@@ -100,8 +82,7 @@ class HashMapTest {
         // given
         List<Integer> key = new ArrayList<>();
         HashMap<List<Integer>, Object> hashMap = new HashMap<>();
-        boolean isSuccessfulPut = hashMap.put(key, null);
-        assertTrue(isSuccessfulPut);
+        assertNull(hashMap.put(key, null));
 
         // when
         Object value = hashMap.get(key);
@@ -146,7 +127,7 @@ class HashMapTest {
 
         // when
         for (int i = 0; i < capacity; i++) {
-            assertTrue(hashMap.put(i, i));
+            assertNull(hashMap.put(i, i));
         }
 
         // then
@@ -166,7 +147,7 @@ class HashMapTest {
 
         // when
         for (int i = 0; i < capacity; i++) {
-            assertTrue(hashMap.put(i, i));
+            assertNull(hashMap.put(i, i));
         }
 
         // then
@@ -185,7 +166,7 @@ class HashMapTest {
 
         // when
         for (int i = 0; i < capacity; i++) {
-            assertTrue(hashMap.put(i, i));
+            assertNull(hashMap.put(i, i));
         }
 
         // then

@@ -52,9 +52,9 @@ public class HashMap<K, V> {
         return null;
     }
 
-    public boolean put(K key, V value) {
+    public V put(K key, V value) {
         if (key == null) {
-            return false;
+            return null;
         }
 
         if ((size + 1) >= threshold) {
@@ -96,9 +96,9 @@ public class HashMap<K, V> {
         return null;
     }
 
-    private boolean put(Node<K, V>[] buckets, K key, V value) {
+    private V put(Node<K, V>[] buckets, K key, V value) {
         if (key == null) {
-            return false;
+            return null;
         }
 
         int index = getIndex(buckets, key);
@@ -108,12 +108,13 @@ public class HashMap<K, V> {
             headNode = new Node<K, V>(key, value, null);
             buckets[index] = headNode;
             size++;
-            return true;
+            return null;
         }
 
         if (headNode.getKey().equals(key)) {
+            V oldValue = headNode.getValue();
             headNode.setValue(value);
-            return true;
+            return oldValue;
         }
 
         // iterate remainder of bucket for key
@@ -121,8 +122,9 @@ public class HashMap<K, V> {
         Node<K, V> nextNode = headNode.getNext();
         while (nextNode != null) {
             if (nextNode.getKey().equals(key)) {
-                headNode.setValue(value);
-                return true;
+                V oldValue = nextNode.getValue();
+                nextNode.setValue(value);
+                return oldValue;
             }
 
             previousNode = nextNode;
@@ -134,7 +136,7 @@ public class HashMap<K, V> {
         Node<K, V> newNode = new Node<K, V>(key, value, null);
         previousNode.setNext(newNode);
         size++;
-        return true;
+        return null;
     }
 
     private int defaultPreHash(Object key) {
