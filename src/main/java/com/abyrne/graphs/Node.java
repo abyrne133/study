@@ -1,18 +1,19 @@
 package com.abyrne.graphs;
 
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 
 public class Node {
     Object value;
     Node[] adjacentNodes;
-    boolean isVisited;
-
 
     public boolean breadthFirstSearch(Node destination) {
+        Set<Node> visited = new HashSet<>();
         Node root = this;
-        root.isVisited = true;
+        visited.add(root);
         Queue<Node> queue = new LinkedList<>();
         queue.add(root);
 
@@ -24,12 +25,12 @@ public class Node {
             if (node.equals(destination)) {
                 return true;
             }
-            node.isVisited = true;
+            visited.add(node);
             if (node.adjacentNodes == null) {
                 continue;
             }
             for (Node n : node.adjacentNodes) {
-                if (!n.isVisited) {
+                if (!visited.contains(n)) {
                     queue.add(n);
                 }
             }
