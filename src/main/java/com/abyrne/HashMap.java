@@ -1,8 +1,10 @@
 package com.abyrne;
 
+import java.util.AbstractMap;
+import java.util.Set;
 import java.util.function.Function;
 
-public class HashMap<K, V> {
+public class HashMap<K, V> extends AbstractMap<K, V> {
 
     private static final int DEFAULT_CAPACITY = 16;
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
@@ -26,7 +28,7 @@ public class HashMap<K, V> {
         this.preHashFunction = (k) -> defaultPreHash(k);
     }
 
-    public HashMap(int initialCapacity, float loadFactor, Function<Object, Integer> preHashFunction){
+    public HashMap(int initialCapacity, float loadFactor, Function<Object, Integer> preHashFunction) {
         this.capacity = initialCapacity;
         this.loadFactor = loadFactor;
         this.setThreshold();
@@ -35,7 +37,7 @@ public class HashMap<K, V> {
         this.preHashFunction = preHashFunction;
     }
 
-    public V get(K key) {
+    public V get(Object key) {
         if (key == null || buckets == null) {
             return null;
         }
@@ -64,7 +66,7 @@ public class HashMap<K, V> {
         return put(buckets, key, value);
     }
 
-    public V remove(K key) {
+    public V remove(Object key) {
         if (key == null || buckets == null) {
             return null;
         }
@@ -94,6 +96,11 @@ public class HashMap<K, V> {
         }
 
         return null;
+    }
+
+    @Override
+    public Set<Entry<K, V>> entrySet() {
+        throw new UnsupportedOperationException();
     }
 
     private V put(Node<K, V>[] buckets, K key, V value) {
@@ -140,12 +147,11 @@ public class HashMap<K, V> {
     }
 
     private int defaultPreHash(Object key) {
-        int preHashCode = key.hashCode();
-        return Math.abs((preHashCode ^ (preHashCode >>> 16)));
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 
-
-    private int getIndex(Node<K, V>[] buckets, K key) {
+    private int getIndex(Node<K, V>[] buckets, Object key) {
         return Math.abs(preHashFunction.apply(key)) % buckets.length;
     }
 
